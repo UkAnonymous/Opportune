@@ -1,0 +1,93 @@
+<% layout("/layouts/boilerplate") %>
+
+<body>
+    <div class="container">
+        <h2>Enter Your Details</h2>
+
+        <form action="/generate" method="POST" enctype="multipart/form-data">
+
+            <label for="name">Name:</label>
+            <input type="text" name="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" required>
+
+            <label for="phone">Phone:</label>
+            <input type="text" name="phone" required>
+
+            <label for="location">Location:</label>
+            <input type="text" name="location" required>
+
+            <label for="summary">Summary:</label>
+            <textarea name="summary" required></textarea>
+
+            <label for="experienceTitle">Experience Title:</label>
+            <input type="text" name="experienceTitle" required>
+
+            <label for="company">Company:</label>
+            <input type="text" name="company" required>
+
+            <label for="responsibilities">Responsibilities (comma-separated):</label>
+            <input type="text" name="responsibilities" required>
+
+            <label for="degree">Education Degree:</label>
+            <input type="text" name="degree" required>
+
+            <label for="university">University:</label>
+            <input type="text" name="university" required>
+
+            <label for="year">Graduation Year:</label>
+            <input type="text" name="year" required>
+
+            <label for="skills">Skills (comma-separated):</label>
+            <input type="text" name="skills" required>
+
+            <!-- Profile Photo Upload -->
+            <label for="profilePhoto">Upload Profile Photo:</label>
+            <input type="file" name="profilePhoto" accept="image/*" required>
+
+            <button type="submit">Generate Resume</button>
+        </form>
+    </div>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 30px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        input, textarea {
+            width: 90%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        input[type="file"] {
+            border: none;
+        }
+        button {
+            padding: 12px 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #218838;
+        }
+    </style>
+</body>

@@ -1,0 +1,425 @@
+<% layout("/layouts/boilerplate") %>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Mock Test Generator</title>
+<style>
+ body {
+  font-family: sans-serif;
+  margin: 20px;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+h1 {
+  text-align: center;
+  color: #007bff; /* Blue heading */
+  margin-bottom: 20px;
+}
+
+label {
+  display: inline-block;
+  margin-right: 15px;
+  margin-bottom: 10px;
+}
+
+input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+#generate-button {
+  background-color: #007bff; /* Blue button */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+#generate-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+#test-area {
+  display: none;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.question {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.question p {
+  margin-bottom: 10px;
+}
+
+.answer {
+  display: none;
+  margin-top: 10px;
+  color: #28a745; /* Green answer */
+  background-color: #e9ecef; /* Light gray background for answer */
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.show-answer-button {
+  background-color: #6c757d; /* Gray button */
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.show-answer-button:hover {
+  background-color: #5a6268; /* Darker gray on hover */
+}
+
+#show-answers {
+    background-color: #007bff; /* Blue button */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease; /* Smooth transition */
+    display: none;
+}
+
+#show-answers:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+</style>
+</head>
+<body>
+
+<h1>Mock Test Generator</h1>
+
+<label><input type="checkbox" id="data-analytics"> Data Analytics</label>
+<label><input type="checkbox" id="software-engineer"> Software Engineer</label>
+<label><input type="checkbox" id="devops-engineer"> DevOps Engineer</label>
+<label><input type="checkbox" id="Python"> Python</label>
+<label><input type="checkbox" id="Javascript"> Javascript</label>
+<br><br>
+
+<button id="generate-button">Generate Test</button>
+
+<div id="test-area">
+  <div id="questions-container"> </div> <button id="show-answers">Show Answers</button>
+</div>
+
+<script>
+  const generateButton = document.getElementById('generate-button');
+  const testArea = document.getElementById('test-area');
+  const questionsContainer = document.getElementById('questions-container');
+  const showAnswersButton = document.getElementById('show-answers');
+  const dataAnalyticsCheckbox = document.getElementById('data-analytics');
+  const softwareEngineerCheckbox = document.getElementById('software-engineer');
+  const devopsEngineerCheckbox = document.getElementById('devops-engineer');
+  const PythonCheckbox = document.getElementById('Python');
+  const JavascriptCheckbox = document.getElementById('Javascript');
+
+  // Sample Question Bank (You'll need to expand this significantly)
+  const questionBank = {
+    "data-analytics": [
+      { question: "What is the difference between a mean and a median?", answer: "Mean is the average, median is the middle value." },
+      { question: "Explain linear regression.", answer: "A statistical method to model the relationship between variables." },
+      { question: "What is data mining?", answer: "The process of extracting useful information from large datasets."},
+      { question: "What is the difference between supervised and unsupervised learning?", answer: "Supervised learning uses labeled data, while unsupervised learning finds patterns in unlabeled data."},
+{ question: "What is feature engineering?", answer: "Feature engineering involves creating new input features to improve machine learning model performance."},
+
+
+{ question: "What is overfitting in machine learning?", answer: "Overfitting occurs when a model learns noise instead of patterns, leading to poor generalization on new data."},
+
+
+{ question: "What is the purpose of cross-validation?", answer: "Cross-validation assesses model performance by training and testing it on different subsets of data."},
+
+
+{question: "What is a neural network?", answer: "A neural network is a computational model inspired by the human brain, consisting of layers of interconnected nodes."},
+
+
+{ question: "What is an API?", answer: "An API (Application Programming Interface) allows different software systems to communicate with each other."},
+
+
+{ question: "What is object-oriented programming?", answer: "OOP is a programming paradigm based on objects, which contain both data and behavior."},
+
+
+{question: "What is the difference between a stack and a queue?", answer: "A stack follows LIFO (Last In, First Out), while a queue follows FIFO (First In, First Out)."},
+
+
+{question: "What is a RESTful API?", answer: "A RESTful API follows REST principles, using HTTP methods to interact with resources."},
+
+
+{question: "What is a database index?", answer: "A database index improves query performance by allowing faster data retrieval."},
+
+
+ {question: "What is CI/CD?", answer: "CI/CD (Continuous Integration/Continuous Deployment) automates code integration and deployment processes."},
+
+
+{question: "What is Docker?", answer: "Docker is a platform for containerizing applications to ensure consistency across environments."},
+
+
+{question: "What is Kubernetes?", answer: "Kubernetes is an open-source system for managing containerized applications."},
+
+
+{question: "What is cloud computing?", answer: "Cloud computing delivers computing services over the internet, such as storage, databases, and servers."},
+
+
+{question: "What is multithreading?", answer: "Multithreading allows concurrent execution of multiple threads to improve program efficiency."},
+
+
+{question: "What is a deadlock?", answer: "A deadlock occurs when multiple processes are waiting on each other indefinitely, preventing progress."},
+
+
+{question: "What is big-O notation?", answer: "Big-O notation describes the worst-case time complexity of an algorithm in terms of input size."},
+
+
+{question: "What is dynamic programming?", answer: "Dynamic programming is an optimization technique that breaks problems into overlapping subproblems and stores results."},
+
+
+{question: "What is the difference between SQL and NoSQL databases?", answer: "SQL databases use structured tables, while NoSQL databases handle unstructured or semi-structured data flexibly."},
+
+
+{question: "What is microservices architecture?", answer: "Microservices architecture structures an application as a collection of small, independent services that communicate via APIs."},
+      // ... more data analytics questions
+    ],
+    "software-engineer": [
+      { question: "What is object-oriented programming?", answer: "A programming paradigm based on the concept of 'objects'." },
+      { question: "Explain the difference between a stack and a queue.", answer: "Stack follows LIFO, queue follows FIFO." },
+      { question: "What is an algorithm?", answer: "A set of rules or instructions for solving a problem."},
+      {question: "What is the difference between a class and an object?", answer: "A class is a blueprint for creating objects, while an object is an instance of a class."},
+
+{question: "What is inheritance in object-oriented programming?", answer: "Inheritance allows a class to inherit properties and methods from another class."},
+
+{question: "What is polymorphism?", answer: "Polymorphism allows objects of different classes to be treated as objects of a common superclass, enabling the same method to behave differently based on the object."},
+
+{question: "What is abstraction?", answer: "Abstraction is the concept of hiding the complex implementation details and showing only the essential features of an object."},
+
+{question: "What is the difference between a thread and a process?", answer: "A thread is the smallest unit of execution within a process, while a process is an instance of a program being executed."},
+
+{question: "What is Agile methodology?", answer: "Agile methodology is an iterative approach to software development, emphasizing flexibility, collaboration, and customer feedback."},
+
+{question: "What is version control?", answer: "Version control is a system that tracks changes to files or code, allowing multiple developers to collaborate and revert changes if necessary."},
+
+{question: "What is a deadlock?", answer: "A deadlock occurs when two or more processes are unable to proceed because they are waiting for each other to release resources."},
+
+{question: "What is a database transaction?", answer: "A database transaction is a sequence of operations performed as a single unit of work, ensuring data integrity."},
+
+{question: "What is a REST API?", answer: "A REST API is an architectural style for designing networked applications, using HTTP methods to perform CRUD operations on resources."},
+
+{question: "What is continuous integration?", answer: "Continuous integration is the practice of frequently integrating code changes into a shared repository to detect and address issues early."},
+
+{question: "What is the SOLID principle?", answer: "SOLID is an acronym for five design principles that help create more understandable, flexible, and maintainable code: Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, and Dependency Inversion."},
+
+{question: "What is refactoring?", answer: "Refactoring is the process of restructuring existing code to improve its readability, maintainability, and performance without changing its functionality."},
+
+{question: "What is the difference between SQL and NoSQL?", answer: "SQL databases use structured tables with predefined schemas, while NoSQL databases are more flexible and can handle unstructured or semi-structured data."},
+
+{question: "What is an algorithm?", answer: "An algorithm is a step-by-step procedure or formula for solving a problem or performing a task."},
+
+{question: "What is cloud computing?", answer: "Cloud computing provides on-demand computing services, such as storage, processing, and networking, over the internet."},
+
+{question: "What is a design pattern?", answer: "A design pattern is a reusable solution to a common problem encountered in software design."},
+
+{question: "What is multi-threading?", answer: "Multi-threading allows concurrent execution of multiple threads within a single process to improve performance and responsiveness."},
+
+{question: "What is the difference between a compiler and an interpreter?", answer: "A compiler translates the entire program into machine code before execution, while an interpreter translates the program line by line during execution."},
+
+{question: "What is a unit test?", answer: "A unit test is a type of test that verifies the correctness of a small, isolated unit of code, such as a function or method."}
+      // ... more software engineering questions
+    ],
+    "devops-engineer": [
+      { question: "What is CI/CD?", answer: "Continuous Integration/Continuous Delivery - a practice to automate and streamline software development." },
+      { question: "Explain Docker.", answer: "A platform for building, shipping, and running applications in containers." },
+      { question: "What is Kubernetes?", answer: "An open-source container orchestration system."},
+      {question: "What is DevOps?", answer: "DevOps is a set of practices that combine software development (Dev) and IT operations (Ops) to shorten the development lifecycle and provide continuous delivery."},
+
+{question: "What is continuous integration?", answer: "Continuous integration (CI) is the practice of automatically integrating code changes into a shared repository and testing them to detect errors early."},
+
+{question: "What is continuous delivery?", answer: "Continuous delivery (CD) is a software engineering approach that automates the release process, enabling teams to deploy code to production at any time."},
+
+{question: "What is infrastructure as code (IaC)?", answer: "Infrastructure as code (IaC) is the practice of managing and provisioning computing infrastructure through machine-readable configuration files rather than physical hardware."},
+
+{question: "What is containerization?", answer: "Containerization is the process of packaging software into containers that include everything needed to run the application, making it portable and consistent across environments."},
+
+{question: "What is Docker?", answer: "Docker is a platform that automates the deployment of applications inside lightweight containers, allowing for consistency across different environments."},
+
+{question: "What is Kubernetes?", answer: "Kubernetes is an open-source platform used to automate the deployment, scaling, and management of containerized applications."},
+
+{question: "What is a microservices architecture?", answer: "Microservices architecture structures an application as a collection of loosely coupled services, which can be developed, deployed, and scaled independently."},
+
+{question: "What is a load balancer?", answer: "A load balancer is a device or software that distributes incoming network traffic across multiple servers to ensure reliability and optimize resource usage."},
+
+{question: "What is a CI/CD pipeline?", answer: "A CI/CD pipeline is a series of automated steps that allow software to be built, tested, and deployed to production seamlessly."},
+
+{question: "What is the difference between continuous integration and continuous delivery?", answer: "Continuous integration focuses on integrating and testing code changes frequently, while continuous delivery automates the deployment process to release updates into production automatically."},
+
+{question: "What is a version control system?", answer: "A version control system (VCS) is a tool that tracks changes to code over time, enabling multiple developers to collaborate efficiently."},
+
+{question: "What is monitoring in DevOps?", answer: "Monitoring in DevOps involves tracking the performance, health, and availability of applications and infrastructure to ensure smooth operation and quick issue resolution."},
+
+{question: "What is the role of automation in DevOps?", answer: "Automation in DevOps eliminates manual processes, increasing efficiency and reducing errors by automating tasks like testing, building, and deployment."},
+
+{question: "What is a rollback?", answer: "A rollback is the process of reverting to a previous stable version of the application or system after a failed update or deployment."},
+
+{question: "What is the difference between a virtual machine and a container?", answer: "A virtual machine is a full operating system running on top of a hypervisor, while a container is a lightweight, isolated environment that shares the host operating system kernel."},
+
+{question: "What is Git?", answer: "Git is a distributed version control system that allows multiple developers to track changes in source code and collaborate efficiently."},
+
+{question: "What is a deployment pipeline?", answer: "A deployment pipeline is a series of automated steps to build, test, and deploy an application to production."},
+
+{question: "What is Jenkins?", answer: "Jenkins is an open-source automation server used to build, test, and deploy software projects, commonly used in continuous integration and delivery pipelines."}
+      // ... more devops questions
+    ],
+    "Python":[
+    {question: "What is a Python decorator?", answer: "A Python decorator is a function that allows you to modify or extend the behavior of other functions or methods."},
+
+{question: "What are Python's key data types?", answer: "Python’s key data types include integers, floating-point numbers, strings, lists, tuples, dictionaries, sets, and booleans."},
+
+{question: "What is the difference between lists and tuples in Python?", answer: "Lists are mutable, meaning their elements can be modified, while tuples are immutable, meaning they cannot be changed after creation."},
+
+{question: "What is the purpose of the self keyword in Python?", answer: "The self keyword refers to the instance of the class, used to access variables and methods associated with the current object."},
+
+{question: "What are Python's built-in data structures?", answer: "Python’s built-in data structures include lists, sets, tuples, and dictionaries."},
+
+{question: "What is a lambda function in Python?", answer: "A lambda function is an anonymous function defined with the 'lambda' keyword that can have any number of arguments but only one expression."},
+
+{question: "What is the difference between 'deepcopy' and 'shallow copy' in Python?", answer: "A shallow copy copies only the references to objects, while a deep copy copies the objects themselves, including nested objects."},
+
+{question: "What is a Python generator?", answer: "A Python generator is a special type of iterator that allows for lazy evaluation, producing values one at a time and conserving memory."},
+
+{question: "What is the purpose of Python's init method?", answer: "The init method is the constructor in Python classes, used to initialize the attributes of an object when it is created."},
+
+{question: "What are Python's exceptions?", answer: "Python exceptions are errors that occur during the execution of a program. They can be caught and handled using 'try', 'except' blocks."},
+
+{question: "What is the difference between 'is' and '==' in Python?", answer: "'is' checks if two variables refer to the same object in memory, while '==' checks if the values of two variables are equal."},
+
+{question: "What is a Python module?", answer: "A Python module is a file containing Python definitions and statements that can be imported and used in other Python programs."},
+
+{question: "What is a Python package?", answer: "A Python package is a collection of Python modules grouped together in a directory, which may contain sub-packages."},
+
+{question: "What is list comprehension in Python?", answer: "List comprehension provides a concise way to create lists using a single line of code, typically in the form of '[expression for item in iterable]'."},
+
+{question: "How does Python handle memory management?", answer: "Python handles memory management through automatic garbage collection and reference counting, which frees up memory when objects are no longer used."}
+    ],
+
+    "Javascript":[
+    {question: "What is the difference between 'let', 'const', and 'var' in JavaScript?", answer: "'let' and 'const' are block-scoped, while 'var' is function-scoped. 'const' cannot be reassigned, while 'let' and 'var' can."},
+
+{question: "What are closures in JavaScript?", answer: "Closures are functions that have access to the variables from their lexical scope, even when the function is executed outside that scope."},
+
+{question: "What is a promise in JavaScript?", answer: "A promise is an object representing the eventual completion or failure of an asynchronous operation and its resulting value."},
+
+{question: "What is the purpose of the 'this' keyword in JavaScript?", answer: "'this' refers to the context in which a function is called, typically the object that owns the method or the global object."},
+
+{question: "What is event delegation in JavaScript?", answer: "Event delegation is a technique where a single event listener is added to a parent element to handle events for multiple child elements."},
+
+{question: "What is a JavaScript callback?", answer: "A callback is a function passed as an argument to another function, which is executed after the completion of the containing function's task."},
+
+{question: "What is hoisting in JavaScript?", answer: "Hoisting is a JavaScript mechanism where variable and function declarations are moved to the top of their scope during the compile phase."},
+
+{question: "What is the difference between 'null' and 'undefined' in JavaScript?", answer: "'undefined' is a variable that has been declared but not assigned a value, while 'null' is an explicit assignment indicating no value."},
+
+{question: "What is the spread operator in JavaScript?", answer: "The spread operator '...' is used to unpack elements from an array or object into individual elements or properties."},
+
+{question: "What is a JavaScript module?", answer: "A JavaScript module is a file that contains code and is imported/exported to be used in other files, following the ES6 module system."},
+
+{question: "What is the 'prototype' in JavaScript?", answer: "The 'prototype' is an object that every JavaScript function has, and it allows for the inheritance of methods and properties by objects."},
+
+{question: "What is 'setTimeout' in JavaScript?", answer: "'setTimeout' is a function that executes a specified callback function after a delay, measured in milliseconds."},
+
+{question: "What is the difference between 'forEach' and 'map' in JavaScript?", answer: "'forEach' executes a function on each item in an array but does not return a value, while 'map' creates a new array based on the results of the function."},
+
+{question: "What is a JavaScript generator function?", answer: "A generator function is a function that can yield multiple values one by one, pausing execution each time and resuming when called again."},
+
+{question: "What is an IIFE in JavaScript?", answer: "An IIFE (Immediately Invoked Function Expression) is a function that is executed right after it is defined, often used to create a local scope."},
+
+{question: "What is the 'async/await' syntax in JavaScript?", answer: "'async' is used to define an asynchronous function, and 'await' pauses the execution of the function until the promise resolves."},
+
+{question: "What is a higher-order function in JavaScript?", answer: "A higher-order function is a function that takes another function as an argument or returns a function as a result."},
+
+{question: "What is a JavaScript closure?", answer: "A closure is a function that retains access to its lexical scope, even when executed outside of that scope."},
+
+{question: "What is the event loop in JavaScript?", answer: "The event loop is the mechanism that allows JavaScript to perform non-blocking I/O operations by executing tasks in a loop, such as processing events and callbacks."}
+    ]
+  };
+
+  generateButton.addEventListener('click', () => {
+    const selectedSkills = [];
+    if (dataAnalyticsCheckbox.checked) selectedSkills.push("data-analytics");
+    if (softwareEngineerCheckbox.checked) selectedSkills.push("software-engineer");
+    if (devopsEngineerCheckbox.checked) selectedSkills.push("devops-engineer");
+    if (PythonCheckbox.checked) selectedSkills.push("Python");
+    if (JavascriptCheckbox.checked) selectedSkills.push("Javascript");
+
+    if (selectedSkills.length === 0) {
+      alert("Please select at least one skill.");
+      return;
+    }
+
+    questionsContainer.innerHTML = ""; // Clear previous questions
+    const questions = [];
+
+    selectedSkills.forEach(skill => {
+      const skillQuestions = questionBank[skill];
+      if (skillQuestions) {
+        // Add a random selection of questions for each skill (example: 3 questions per skill)
+        const numQuestionsToAdd = Math.min(25, skillQuestions.length); // Prevent asking more questions than available
+        const selectedIndices = new Set();
+        while (selectedIndices.size < numQuestionsToAdd) {
+          selectedIndices.add(Math.floor(Math.random() * skillQuestions.length));
+        }
+        selectedIndices.forEach(index => questions.push(skillQuestions[index]));
+      }
+
+    });
+
+    questions.forEach(q => {
+      const questionDiv = document.createElement('div');
+      questionDiv.className = 'question';
+      questionDiv.innerHTML = `<p>${q.question}</p>
+                             <div class="answer">${q.answer}</div>
+                             <button class="show-answer-button">Show Answer</button>`;
+
+      questionsContainer.appendChild(questionDiv);
+
+      const showAnswerButton = questionDiv.querySelector('.show-answer-button');
+      const answerDiv = questionDiv.querySelector('.answer');
+
+      showAnswerButton.addEventListener('click', () => {
+        answerDiv.style.display = answerDiv.style.display === 'block' ? 'none' : 'block';
+        showAnswerButton.textContent = answerDiv.style.display === 'block' ? 'Hide Answer' : 'Show Answer';
+      });
+
+
+    });
+
+    testArea.style.display = 'block'; // Show the test area
+    showAnswersButton.style.display = 'block'; // Show the show answers button
+
+  });
+
+  showAnswersButton.addEventListener('click', () => {
+        const answerDivs = document.querySelectorAll('.answer');
+        answerDivs.forEach(div => {
+            div.style.display = 'block'; // Show all answers
+        });
+    });
+
+</script>
+
+</body>
+</html>

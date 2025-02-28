@@ -1,0 +1,195 @@
+<body>
+    <button id="download-btn" onclick="downloadResume()">Download Resume</button>
+
+    <div id="resume-area" class="resume">
+        <div class="resume-header">
+            <% if (resumeData.photo) { %>
+                <img src="/uploads/<%= resumeData.photo %>" alt="Profile Photo" class="profile-photo">
+            <% } %>
+
+            <h1><%= resumeData.name %></h1>
+            <h2><%= resumeData.title %></h2>
+
+            <p class="contact">
+                📧 <%= resumeData.email %> | 📞 <%= resumeData.phone %> | 📍 <%= resumeData.location %>
+            </p>
+        </div>
+
+        <div class="resume-content">
+            <div class="left-column">
+                <h3>Skills</h3>
+                <div class="skills-container">
+                    <% if (resumeData.skills && resumeData.skills.length > 0) { %>
+                        <% resumeData.skills.forEach(skill => { %>
+                            <span class="skill-badge"><%= skill.trim() %></span>
+                        <% }) %>
+                    <% } else { %>
+                        <p>No skills provided</p>
+                    <% } %>
+                </div>
+
+                <h3>Education</h3>
+                <p><strong><%= resumeData.degree %></strong></p>
+                <p><%= resumeData.university %> | <%= resumeData.year %></p>
+            </div>
+
+            <div class="right-column">
+                <h3>Experience</h3>
+                <p><strong><%= resumeData.experienceTitle %></strong> - <%= resumeData.company %></p>
+                <p><em>July 2023 - Present | Remote</em></p>
+                <ul>
+                    <% if (resumeData.responsibilities && resumeData.responsibilities.length > 0) { %>
+                        <% resumeData.responsibilities.forEach(res => { %>
+                            <li><%= res.trim() %></li>
+                        <% }) %>
+                    <% } else { %>
+                        <p>No Responsibilities Mentioned</p>
+                    <% } %>
+                </ul>
+
+                <h3>Summary</h3>
+                <p class="summary"><%= resumeData.summary %></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script>
+        async function downloadResume() {
+            console.log("📄 Generating PDF...");
+
+            const resumeDiv = document.getElementById("resume-area");
+
+            if (!resumeDiv) {
+                console.error("❌ Resume section not found!");
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+
+            html2canvas(resumeDiv, {
+                scale: 3, // High quality
+                useCORS: true,
+                logging: false,
+                allowTaint: true
+            }).then((canvas) => {
+                const imgData = canvas.toDataURL("image/png");
+                const pdf = new jsPDF({
+                    orientation: "portrait",
+                    unit: "px",
+                    format: [canvas.width, canvas.height]
+                });
+
+                pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+                pdf.save("Resume.pdf");
+            });
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .resume {
+            width: 800px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 3px solid #0077b6;
+        }
+
+        .resume-header {
+            text-align: center;
+        }
+
+        .profile-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #0288d1;
+        }
+
+        h1, h2 {
+            margin: 5px 0;
+            color: #333;
+        }
+
+        .contact {
+            font-size: 14px;
+            color: #444;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .resume-content {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .left-column, .right-column {
+            width: 48%;
+        }
+
+        h3 {
+            font-size: 16px;
+            color: #0077b6;
+            border-bottom: 2px solid #0077b6;
+            padding-bottom: 4px;
+            margin-bottom: 8px;
+        }
+
+        .skill-badge {
+            background: #0077b6;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 5px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .summary {
+            font-size: 13px;
+            color: #444;
+            font-style: italic;
+            border-left: 4px solid #0077b6;
+            padding-left: 8px;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .resume {
+                width: 100%;
+                box-shadow: none;
+                border: none;
+                padding: 15mm;
+            }
+
+            .resume-content {
+                display: block !important;
+            }
+
+            .left-column, .right-column {
+                width: 100%;
+            }
+
+            button {
+                display: none;
+            }
+        }
+    </style>
+</body>

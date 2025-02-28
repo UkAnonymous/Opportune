@@ -1,0 +1,599 @@
+
+<% layout("/layouts/boilerplate") %>
+<body>
+<div class="container">
+
+    <div class="header">
+
+      <h1>Job Analysis</h1>
+
+    </div>
+
+
+
+    <div class="search-container">
+
+      <label for="jobSelect">Select a job title:</label>
+
+      <select id="jobSelect">
+
+        <option value="">Select a job title</option>
+
+        <option value="Product Manager">Product Manager</option>
+
+        <option value="Data Scientist">Data Scientist</option>
+
+        <option value="Software Engineer">Software Engineer</option>
+
+        <option value="Cybersecurity Analyst">Cybersecurity Analyst</option>
+
+        <option value="DevOps Engineer">DevOps Engineer</option>
+
+        <option value="UI/UX Designer">UI/UX Designer</option>
+
+        <option value="AI Specialist">AI Specialist</option>
+
+        <option value="Marketing Manager">Marketing Manager</option>
+
+        <option value="Blockchain Developer">Blockchain Developer</option>
+
+        <option value="Cloud Architect">Cloud Architect</option>
+
+        <option value="HR Specialist">HR Specialist</option>
+
+        <option value="Finance Analyst">Finance Analyst</option>
+
+        <option value="Game Developer">Game Developer</option>
+
+        <option value="AR/VR Developer">AR/VR Developer</option>
+
+        <option value="Mobile App Developer">Mobile App Developer</option>
+
+        <option value="Network Engineer">Network Engineer</option>
+
+        <option value="Database Administrator">Database Administrator</option>
+
+        <option value="Mechanical Engineer">Mechanical Engineer</option>
+
+        <option value="Electrical Engineer">Electrical Engineer</option>
+
+        <option value="Civil Engineer">Civil Engineer</option>
+
+        <option value="AI Researcher">AI Researcher</option>
+
+        <option value="Graphic Designer">Graphic Designer</option>
+
+        <option value="Copywriter">Copywriter</option>
+
+        <option value="Customer Support">Customer Support</option>
+
+        <option value="AI Engineer">AI Engineer</option>
+
+        <option value="Web Developer">Web Developer</option>
+
+        <option value="Robotics Engineer">Robotics Engineer</option>
+
+        <option value="Digital Marketer">Digital Marketer</option>
+
+        <option value="QA Engineer">QA Engineer</option>
+
+        <option value="IT Manager">IT Manager</option>
+
+      </select>
+
+      <button onclick="analyzeJob()">Analyze Job</button>
+
+    </div>
+
+
+
+    <div id="jobAnalysis">
+
+      <!-- Job analysis will be displayed here -->
+
+    </div>
+
+  </div>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+
+    // Add job data here
+
+    const jobs = [
+
+  {
+
+    title: "Product Manager",
+
+    description: "Oversees product development from start to finish.",
+
+    riskPercentage: 15,
+
+    riskDescription: "Low Risk",
+
+    demand: "High",
+
+    demandTrend: [70, 75, 80, 85, 90],
+
+  },
+
+  {
+
+    title: "Data Scientist",
+
+    description: "Analyzes complex data for actionable insights.",
+
+    riskPercentage: 10,
+
+    riskDescription: "Very Low Risk",
+
+    demand: "Very High",
+
+    demandTrend: [60, 70, 80, 90, 95],
+
+  },
+
+  {
+
+    title: "Software Engineer",
+
+    description: "Develops and maintains software applications.",
+
+    riskPercentage: 5,
+
+    riskDescription: "Very Low Risk",
+
+    demand: "High",
+
+    demandTrend: [80, 85, 90, 95, 100],
+
+  },
+
+  {
+
+    title: "Cybersecurity Analyst",
+
+    description: "Protects systems and data from cyber threats.",
+
+    riskPercentage: 8,
+
+    riskDescription: "Very Low Risk",
+
+    demand: "Very High",
+
+    demandTrend: [70, 75, 80, 85, 90],
+
+  },
+
+  {
+
+    title: "UI/UX Designer",
+
+    description: "Designs user-friendly interfaces and experiences.",
+
+    riskPercentage: 20,
+
+    riskDescription: "Moderate Risk",
+
+    demand: "Moderate",
+
+    demandTrend: [50, 55, 60, 65, 70],
+
+  },
+
+  {
+
+    title: "AI Specialist",
+
+    description: "Develops artificial intelligence models and applications.",
+
+    riskPercentage: 9,
+
+    riskDescription: "Very Low Risk",
+
+    demand: "Very High",
+
+    demandTrend: [70, 75, 80, 85, 90],
+
+  },
+
+  {
+
+    title: "Marketing Manager",
+
+    description: "Plans and executes marketing strategies.",
+
+    riskPercentage: 18,
+
+    riskDescription: "Low Risk",
+
+    demand: "Moderate",
+
+    demandTrend: [40, 50, 55, 60, 65],
+
+  },
+
+  {
+
+    title: "Blockchain Developer",
+
+    description: "Creates decentralized applications and blockchain solutions.",
+
+    riskPercentage: 7,
+
+    riskDescription: "Very Low Risk",
+
+    demand: "High",
+
+    demandTrend: [60, 65, 70, 80, 85],
+
+  },
+
+  {
+
+    title: "Cloud Architect",
+
+    description: "Designs and oversees cloud-based systems.",
+
+    riskPercentage: 6,
+
+    riskDescription: "Very Low Risk",
+
+    demand: "High",
+
+    demandTrend: [70, 75, 80, 85, 90],
+
+  },
+
+  {
+
+    title: "Game Developer",
+
+    description: "Designs and develops video games.",
+
+    riskPercentage: 13,
+
+    riskDescription: "Low Risk",
+
+    demand: "High",
+
+    demandTrend: [55, 60, 65, 70, 75],
+
+  },
+
+  {
+
+    title: "Mobile App Developer",
+
+    description: "Builds and maintains mobile applications.",
+
+    riskPercentage: 8,
+
+    riskDescription: "Very Low Risk",
+
+    demand: "High",
+
+    demandTrend: [70, 75, 80, 85, 90],
+
+  },
+
+  {
+
+    title: "Digital Marketer",
+
+    description: "Manages online marketing campaigns.",
+
+    riskPercentage: 18,
+
+    riskDescription: "Low Risk",
+
+    demand: "Moderate",
+
+    demandTrend: [40, 50, 55, 60, 65],
+
+  },
+
+  {
+
+    title: "DevOps Engineer",
+
+    description: "Ensures seamless software development and deployment.",
+
+    riskPercentage: 12,
+
+    riskDescription: "Low Risk",
+
+    demand: "High",
+
+    demandTrend: [60, 65, 70, 75, 80],
+
+  },
+
+  {
+
+    title: "Graphic Designer",
+
+    description: "Creates visual content for communication.",
+
+    riskPercentage: 25,
+
+    riskDescription: "Moderate Risk",
+
+    demand: "Low",
+
+    demandTrend: [30, 35, 40, 45, 50],
+
+  },
+
+  {
+
+    title: "Copywriter",
+
+    description: "Writes compelling content for marketing and advertising.",
+
+    riskPercentage: 20,
+
+    riskDescription: "Low Risk",
+
+    demand: "Low",
+
+    demandTrend: [25, 30, 35, 40, 45],
+
+  },
+
+  {
+
+    title: "Customer Support Specialist",
+
+    description: "Assists customers with inquiries and issues.",
+
+    riskPercentage: 28,
+
+    riskDescription: "Moderate Risk",
+
+    demand: "Low",
+
+    demandTrend: [20, 25, 30, 35, 40],
+
+  },
+
+  {
+
+    title: "Network Engineer",
+
+    description: "Designs and maintains network systems.",
+
+    riskPercentage: 16,
+
+    riskDescription: "Low Risk",
+
+    demand: "Moderate",
+
+    demandTrend: [50, 55, 60, 65, 70],
+
+  },
+
+  {
+
+    title: "Electrical Engineer",
+
+    description: "Designs electrical systems and devices.",
+
+    riskPercentage: 15,
+
+    riskDescription: "Low Risk",
+
+    demand: "Moderate",
+
+    demandTrend: [50, 55, 60, 65, 70],
+
+  },
+
+  {
+
+    title: "Civil Engineer",
+
+    description: "Plans and supervises construction projects.",
+
+    riskPercentage: 18,
+
+    riskDescription: "Low Risk",
+
+    demand: "Moderate",
+
+    demandTrend: [45, 50, 55, 60, 65],
+
+  },
+
+  {
+
+    title: "Robotics Engineer",
+
+    description: "Designs and builds robots and robotic systems.",
+
+    riskPercentage: 7,
+
+    riskDescription: "Very Low Risk",
+
+    demand: "High",
+
+    demandTrend: [65, 70, 75, 80, 85],
+
+  },
+
+  {
+
+    title: "Finance Analyst",
+
+    description: "Provides insights based on financial data.",
+
+    riskPercentage: 19,
+
+    riskDescription: "Low Risk",
+
+    demand: "Moderate",
+
+    demandTrend: [40, 45, 50, 55, 60],
+
+  },
+
+  {
+
+    title: "IT Manager",
+
+    description: "Manages IT systems and teams.",
+
+    riskPercentage: 10,
+
+    riskDescription: "Very Low Risk",
+
+    demand: "High",
+
+    demandTrend: [70, 75, 80, 85, 90],
+
+  },
+
+  {
+
+    title: "Mechanical Engineer",
+
+    description: "Designs and builds mechanical systems.",
+
+    riskPercentage: 20,
+
+    riskDescription: "Moderate Risk",
+
+    demand: "Moderate",
+
+    demandTrend: [45, 50, 55, 60, 65],
+
+  },
+
+  {
+
+    title: "Database Administrator",
+
+    description: "Manages database systems and ensures data integrity.",
+
+    riskPercentage: 17,
+
+    riskDescription: "Low Risk",
+
+    demand: "Moderate",
+
+    demandTrend: [50, 55, 60, 65, 70],
+
+  },
+
+];
+
+
+
+    function analyzeJob() {
+
+      const selectedJob = document.getElementById("jobSelect").value;
+
+      const job = jobs.find((j) => j.title === selectedJob);
+
+
+
+      if (job) {
+
+        // Display job analysis
+
+        const jobAnalysis = `
+
+          <div class="card">
+
+            <h3>${job.title}</h3>
+
+            <p>${job.description}</p>
+
+            <p>Risk Percentage: ${job.riskPercentage}% (${job.riskDescription})</p>
+
+            <p>Demand: ${job.demand}</p>
+
+            <canvas id="demandTrendChart"></canvas>
+
+          </div>
+
+        `;
+
+        document.getElementById("jobAnalysis").innerHTML = jobAnalysis;
+
+
+
+        // Create demand trend chart
+
+        const ctx = document.getElementById("demandTrendChart").getContext("2d");
+
+        new Chart(ctx, {
+
+          type: "line",
+
+          data: {
+
+            labels: ["2018", "2019", "2020", "2021", "2022"],
+
+            datasets: [
+
+              {
+
+                label: "Demand Trend",
+
+                data: job.demandTrend,
+
+                borderColor: "rgba(75, 192, 192, 1)",
+
+                backgroundColor: "rgba(75, 192, 192, 0.2)",
+
+                fill: true,
+
+              },
+
+            ],
+
+          },
+
+          options: {
+
+            responsive: true,
+
+            plugins: {
+
+              legend: {
+
+                display: true,
+
+                position: "top",
+
+              },
+
+            },
+
+          },
+
+        });
+
+      } else {
+
+        // Show error message
+
+        document.getElementById("jobAnalysis").innerHTML =
+
+          "<p>Please select a valid job title.</p>";
+
+      }
+
+    }
+
+
+
+  </script>
+
+  
+  </body>

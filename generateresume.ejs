@@ -1,0 +1,30 @@
+
+
+<% resumeData.forEach(person => { %>
+    <div class="resume">
+        <h2><%= person.name %></h2>
+        <p><%= person.summary %></p>
+
+        <h3>EXPERIENCE</h3>
+        <% person.experience.forEach(exp => { %>
+            <ul>
+                <li><strong>Title:</strong> <%= exp.title %></li>
+                <li><strong>Company:</strong> <%= exp.company %></li>
+                <li><strong>Dates:</strong> <%= exp.dates %></li>
+                <li><strong>Responsibilities:</strong> <%= exp.responsibilities.join(", ") %></li>
+            </ul>
+        <% }) %>
+
+        <h3>EDUCATION</h3>
+        <% person.education.forEach(edu => { %>
+            <ul>
+                <li><strong>Degree:</strong> <%= edu.degree %></li>
+                <li><strong>University:</strong> <%= edu.university %></li>
+                <li><strong>Date:</strong> <%= edu.date %></li>
+            </ul>
+        <% }) %>
+
+        <h3>SKILLS</h3>
+        <p><%= person.skills.join(", ") %></p>
+    </div>
+<% }) %>

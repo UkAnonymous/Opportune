@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salary Calculator</title>
+    <link rel="stylesheet" href="/public/style.css">
+</head>
+<body>
+    <h2>Salary Estimator</h2>
+    
+    <form id="salaryForm">
+        <label for="experience">Years of Experience:</label>
+        <input type="number" id="experience" name="experience" required>
+
+        <label for="location">Select Location:</label>
+        <select id="location" name="location">
+            <option value="USA">USA</option>
+            <option value="India">India</option>
+            <option value="Germany">Germany</option>
+            <option value="UK">UK</option>
+        </select>
+
+        <button type="submit">Estimate Salary</button>
+    </form>
+
+    <div id="salaryResult"></div>
+
+    <script>
+        document.getElementById("salaryForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const experience = document.getElementById("experience").value;
+            const location = document.getElementById("location").value;
+
+            fetch('/calculate-salary?experience=${experience}&location=${location}')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("salaryResult").innerHTML = <h3>Estimated Salary: $${data.estimatedSalary} per year</h3>;
+                });
+        });
+    </script>
+</body>
+</html>

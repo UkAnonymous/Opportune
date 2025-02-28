@@ -1,0 +1,230 @@
+<% layout("/layouts/boilerplate") %>
+
+<!-- ✅ Hero Section (Visible to All) -->
+<body>
+  <div class="hero-container">
+    <h1>Welcome to Opportune! 🚀</h1>
+    <p>Your AI-powered job analysis platform for a brighter future.</p>
+    <a href="#info" class="cta-button">Learn More</a>
+  </div>
+
+  <% if (user) { %> 
+    <!-- ✅ Dashboard UI After Sign-In -->
+    <div class="dashboard-container">
+      <h1>Welcome, <%= user.name %>! 🎉</h1>
+      <p>Email: <%= user.email %></p>
+      <img src="<%= user.photo %>" alt="Profile Picture" class="profile-pic">
+      
+      <div class="dashboard-nav">
+        <button onclick="goToProfile()">My Profile</button>
+        <button onclick="listings()">Job Listings</button>
+        <button onclick="logout()">Logout</button>
+      </div>
+    </div>
+
+    <div id="info">
+        <h1> About this website </h1>
+        <ul>
+          <li><b>Personalized Job Matching:</b> AI-driven job recommendations based on skills & interests.</li>
+          <li><b>Skill Development & Training:</b> Upgrade skills and bridge gaps.</li>
+          <li><b>AI-Powered Resume Building:</b> Generate professional resumes instantly.</li>
+          <li><b>Real-Time Job Market Insights:</b> Track in-demand skills & hiring trends.</li>
+          <li><b>Community Support:</b> Network with professionals & mentors.</li>
+          <li><b>Events & Workshops:</b> Webinars & career fairs.</li>
+        </ul>
+        <h2> Why Use This Platform? </h2>
+        <p>Empowering job seekers with AI-driven tools, saving time, and building confidence for career success!</p>
+      </div>
+    </div>
+
+    <script>
+      function logout() {
+          fetch('/logout', { method: 'POST' }) 
+              .then(() => window.location.href = "/"); 
+      }
+    </script>
+
+  <% } else { %>  
+    <!-- ✅ Landing Page UI Before Sign-In -->
+    <div class="imgcontainer">
+      <img src="./55.jpg" alt="Opportune Logo">
+      <div class="auth-buttons">
+        <a href="/exasignup"><button> Sign Up</button></a>
+        <a href="/exasignin"><button> Sign In</button></a>
+      </div>
+      
+      <div id="info">
+        <h1> About this website </h1>
+        <ul>
+          <li><b>Personalized Job Matching:</b> AI-driven job recommendations based on skills & interests.</li>
+          <li><b>Skill Development & Training:</b> Upgrade skills and bridge gaps.</li>
+          <li><b>AI-Powered Resume Building:</b> Generate professional resumes instantly.</li>
+          <li><b>Real-Time Job Market Insights:</b> Track in-demand skills & hiring trends.</li>
+          <li><b>Community Support:</b> Network with professionals & mentors.</li>
+          <li><b>Events & Workshops:</b> Webinars & career fairs.</li>
+        </ul>
+        <h2> Why Use This Platform? </h2>
+        <p>Empowering job seekers with AI-driven tools, saving time, and building confidence for career success!</p>
+      </div>
+    </div>
+  <% } %>
+
+  <style>
+  /* ✅ General Styling */
+  body {
+      font-family: 'Poppins', sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+  }
+
+  /* ✅ Hero Section Styling */
+  .hero-container {
+      background: #007bff;
+      color: white;
+      padding: 50px 0;
+      text-align: center;
+  }
+
+  .hero-container h1 {
+      font-size: 36px;
+      margin: 10px 0;
+  }
+
+  .hero-container p {
+      font-size: 18px;
+      margin-bottom: 20px;
+  }
+
+  .cta-button {
+      background: #28a745;
+      color: white;
+      padding: 12px 20px;
+      font-size: 18px;
+      border-radius: 5px;
+      text-decoration: none;
+  }
+
+  .cta-button:hover {
+      background: #218838;
+  }
+
+  /* ✅ Dashboard Styling */
+  .dashboard-container {
+      background: white;
+      max-width: 500px;
+      margin: 50px auto;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .profile-pic {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-top: 10px;
+  }
+
+  .dashboard-nav {
+      margin-top: 20px;
+  }
+
+  .dashboard-nav button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      font-size: 16px;
+      margin: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+  }
+
+  .dashboard-nav button:hover {
+      background: #0056b3;
+  }
+
+  /* ✅ Landing Page Styling */
+  .imgcontainer {
+      text-align: center;
+      margin-top: 50px;
+  }
+
+  .imgcontainer img {
+      width: 120px;
+  }
+
+  .auth-buttons {
+      margin-top: 20px;
+  }
+
+  .auth-buttons button {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 18px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 10px;
+  }
+
+  .auth-buttons button:hover {
+      background: #218838;
+  }
+
+  #info {
+      max-width: 600px;
+      margin: 40px auto;
+      text-align: left;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  #info ul {
+      padding-left: 20px;
+  }
+
+  #info li {
+      margin-bottom: 10px;
+  }
+
+  /* ✅ Responsive Design */
+  @media (max-width: 768px) {
+      .dashboard-container {
+          width: 90%;
+          padding: 20px;
+      }
+
+      #info {
+          width: 90%;
+          padding: 15px;
+      }
+  }
+
+/* Styling for images */
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+}
+
+/* Specific styling for the logo/image in the landing page */
+.imgcontainer img {
+    width: 150px;  /* Adjust size as needed */
+    height: auto;
+    border-radius: 10px; /* Optional: Adds smooth rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Adds depth */
+    transition: transform 0.3s ease-in-out; /* Smooth hover effect */
+}
+
+.imgcontainer img:hover {
+    transform: scale(1.05); /* Slight zoom effect on hover */
+}
+  </style>
+</body>

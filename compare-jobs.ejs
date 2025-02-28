@@ -1,0 +1,173 @@
+<% layout("/layouts/boilerplate") %>
+<body>
+    <h2>Compare Jobs</h2>
+    
+    <form id="compareForm">
+        <label for="job1">Select Job 1:</label>
+        <select id="job1" name="job1">
+            <option value="Software Engineer">Software Engineer</option>
+            <option value="Data Scientist">Data Scientist</option>
+            <option value="Mechanical Engineer">Mechanical Engineer</option>
+            <option value="Civil Engineer">Civil Engineer</option>
+        </select>
+
+        <label for="job2">Select Job 2:</label>
+        <select id="job2" name="job2">
+            <option value="Software Engineer">Software Engineer</option>
+            <option value="Data Scientist">Data Scientist</option>
+            <option value="Mechanical Engineer">Mechanical Engineer</option>
+            <option value="Civil Engineer">Civil Engineer</option>
+        </select>
+
+        <button type="submit">Compare</button>
+    </form>
+
+    <div id="comparisonResult"></div>
+
+    <script>
+        document.getElementById("compareForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const job1 = document.getElementById("job1").value;
+            const job2 = document.getElementById("job2").value;
+
+            const response = await fetch("/compare-jobs", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ job1, job2 })
+            });
+
+            const data = await response.json();
+
+            document.getElementById("comparisonResult").innerHTML = `
+                <h3>Comparison Results</h3>
+                <p><strong>${job1}</strong></p>
+                <p>Salary: ${data.job1Salary}</p>
+                <p>Skills Required: ${data.job1Skills}</p>
+                <p>Future Growth: ${data.job1Future}</p>
+                <p>Demand Trend: ${data.job1Demand}</p>
+
+                <p><strong>${job2}</strong></p>
+                <p>Salary: ${data.job2Salary}</p>
+                <p>Skills Required: ${data.job2Skills}</p>
+                <p>Future Growth: ${data.job2Future}</p>
+                <p>Demand Trend: ${data.job2Demand}</p>
+
+                <p><strong>Salary Difference:</strong> ${data.salaryDifference}</p>
+            `;
+        });
+    </script>
+
+    <style>
+/* General Page Styling */
+body {
+    font-family: "Poppins", sans-serif;
+    background-color: #f4f7fc;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Header */
+h2 {
+    color: #2c3e50;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+/* Form Styling */
+form {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    text-align: left;
+    margin-top: 20px;
+    width: 350px;
+}
+
+/* Labels */
+label {
+    display: block;
+    font-weight: bold;
+    margin-top: 15px;
+    color: #34495e;
+}
+
+/* Select Dropdown */
+select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 2px solid #bdc3c7;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    background-color: #ecf0f1;
+}
+
+/* Button */
+button {
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    margin-top: 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background: linear-gradient(45deg, #0056b3, #003f7f);
+    transform: scale(1.05);
+}
+
+/* Results Section */
+#comparisonResult {
+    margin-top: 30px;
+    padding: 20px;
+    background: white;
+    display: inline-block;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    width: 400px;
+}
+
+/* Job Titles */
+h3 {
+    color: #007bff;
+    font-size: 22px;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+/* Result Text */
+p {
+    font-size: 16px;
+    color: #333;
+    margin: 5px 0;
+}
+
+/* Strong Text */
+strong {
+    color: #2c3e50;
+    font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    form, #comparisonResult {
+        width: 90%;
+    }
+}
+
+    </style>
+</body>
+

@@ -1,0 +1,66 @@
+
+body{
+background-color: rgb(250, 242, 242);
+}
+   h1{display:flex;
+   justify-content: center;
+   align-items: center;
+   margin: 0;
+   background-color: rgba(158, 141, 141, 0.385);
+   border: 2px solid rgba(115, 23, 235, 0.786);
+  
+   
+   
+
+}
+#jobsearch{
+   position: absolute;
+   top: 17px; /* Adjust as needed */
+   right:  70px; /* Adjust as needed */
+   background-color: antiquewhite;
+   border: 2px solid rgba(115, 23, 235, 0.786);
+
+
+   
+
+}
+#jobsearch:hover{
+   box-shadow: 5px 5px 5px rgb(144, 186, 217);
+}
+.header:hover{
+box-shadow: 2px solid rgba(13, 13, 146, 0.725) ;
+
+}
+.card{
+   width: 500px;
+   padding: 10px;
+   justify-items: center;
+   background-color: azure;
+   border: 2px solid black;
+   display: inline-block;
+   margin: 20px;
+   
+   
+}
+desc{
+   text-align: center;
+}
+button{
+   justify-content: center;
+   text-align: center;
+   padding: 10px 20px;
+   margin-left: 180px;
+   font-size: 16px;
+   border-radius: 15px;
+   color: rgb(9, 16, 14);
+   
+}
+button:hover{
+   background-color: rgb(132, 132, 208);
+   box-shadow: 2px solid rgba(231, 205, 205, 0.625);
+}
+.card:hover{
+   background-color: rgb(178, 178, 219);
+   box-shadow: 2px solid rgba(129, 121, 154, 0.625);
+
+}

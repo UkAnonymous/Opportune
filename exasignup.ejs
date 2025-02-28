@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .google-btn {
+            background-color: #db4437;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .google-btn img {
+            width: 20px;
+            margin-right: 10px;
+        }
+        .profile-section {
+            display: none;
+            text-align: center;
+        }
+    </style>
+
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
+    import { getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBS7KDJKfRTLzGYEY8FYdNhBP4uYPkiUZ4",
+        authDomain: "opportune-d6c62.firebaseapp.com",
+        projectId: "opportune-d6c62",
+        storageBucket: "opportune-d6c62.appspot.com",
+        messagingSenderId: "167593750884",
+        appId: "1:167593750884:web:9506f13217fa26712d4a71",
+        measurementId: "G-86BNWLK5N2"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+
+    async function setSession(user) {
+        return fetch('/set-session', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                uid: user.uid,
+                name: user.displayName || "User",
+                email: user.email,
+                photo: user.photoURL || "default.png"
+            })
+        });
+    }
+
+    window.emailSignUp = function () {
+        const email = document.getElementById("signupEmail").value;
+        const password = document.getElementById("signupPassword").value;
+        let userName = prompt("Enter your name:");
+
+        if (!userName) userName = email; 
+
+        createUserWithEmailAndPassword(auth, email, password)
+            .then(async (userCredential) => {
+                const user = userCredential.user;
+                await updateProfile(user, { displayName: userName });
+
+                await setDoc(doc(db, "users", user.uid), {
+                    email: user.email,
+                    uid: user.uid,
+                    name: userName
+                });
+
+                return setSession(user);
+            })
+            .then(() => {
+                alert("Sign-up successful! ✅");
+                window.location.href = "/home"; 
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                alert("Sign-up Failed! ❌ " + error.message);
+            });
+    };
+
+    function googleSignUp() {
+        signInWithPopup(auth, provider)
+            .then(async (result) => {
+                const user = result.user;
+                await setDoc(doc(db, "users", user.uid), {
+                    email: user.email,
+                    uid: user.uid,
+                    name: user.displayName || "Google User"
+                });
+
+                return setSession(user);
+            })
+            .then(() => {
+                window.location.href = "/home";
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                alert("Login Failed! ❌ " + error.message);
+            });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("googleSignUpBtn").addEventListener("click", googleSignUp);
+    });
+</script>
+</script>
+</head>
+
+<body>
+    <div class="container" id="signupContainer">
+        <h2>Sign Up</h2>
+        <input type="email" id="signupEmail" placeholder="Enter Email">
+        <input type="password" id="signupPassword" placeholder="Enter Password">
+        <button onclick="emailSignUp()">Sign Up</button>
+        <button id="googleSignUpBtn" class="google-btn">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAzFBMVEVHcEz////////+/v77+/vx8fL9/f309fX+/v739/f////09PXOz8/5+vr8/P3////////29vf///////84qlf8wAdGiPX8/PzsUUTqQjQsqFLrSj3S3/w6g/TqPCs0gPQgpUf85+bv9P+63sL62Nb+8ef4ycbw+PJkunkeePP81HXwgGv0jhzc5/3o9efX7N5Fr19Uj/WQy562zPr2trL94KDzoJrzoJv80Gjyl5H94qgyh9v7xzihsSp+wYV1sE5ZtXBmmvUynoWKrvzKDGT6AAAAE3RSTlMAW+TTeBLcHLMt1WsKzfUznkBIxSDAuAAAAUZJREFUKJFtktligkAMRUFZxKVuDMOAggpu1apVu+/t//9TkxBU1PsySQ4hlyGadpTd0fWOrV2R3eqyWhe80j1RpYCc7pmcI2tyaZimQw6bOTMplU9hpKIofJSUmgwtTCYq9EFhqKIJ5lbGdGIRAGhUQLNX6wRLOA2Y8vdpuvfVOJtaOjhdhL56yYrjU8cGFsRSLc4/x+DPfxBiSZN6LMlXUYXzVghBT8/7pPkdxFX28yzEO8HYI8U9dlQudMZx3AeInWWe+SrExxrhCLTre3E+M3P7FXznLn887z53a2PwGbjBLLvUP2jcYUC/FYdOA9d1g22SbN1fbizT9bUxXA+QguB4G2GlfbIFqw1i0GCzKmzDDQ1LZgPQLKHk5rAJpmSj0ykH0jxArW4V79yqF1bMkEckjYvFrTWIy0btApFsx7m68Ff1D4OdMHbngtKsAAAAAElFTkSuQmCC" alt="Google Logo">
+            Sign in with Google
+        </button>
+    </div>
+
+    <div class="profile-section" id="profileSection">
+        <h2>Welcome, <span id="userName"></span></h2>
+        <p>Email: <span id="userEmail"></span></p>
+        <button onclick="logoutUser()">Logout</button>
+    </div>
+</body>
+</html>

@@ -1,0 +1,176 @@
+
+<body>
+
+    <div class="container">
+        <div class="login-box">
+            <h2>Welcome to Job Portal</h2>
+            <p>Sign in to access your dashboard</p>
+
+            <!-- Email & Password Login -->
+            <input type="email" id="email" placeholder="Enter Email">
+            <input type="password" id="password" placeholder="Enter Password">
+            <button onclick="emailSignIn()">Sign In</button>
+
+            <p>OR</p>
+
+            <!-- Google Sign-In -->
+            <button id="googleSignInBtn">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAzFBMVEVHcEz////////+/v77+/vx8fL9/f309fX+/v739/f////09PXOz8/5+vr8/P3////////29vf///////84qlf8wAdGiPX8/PzsUUTqQjQsqFLrSj3S3/w6g/TqPCs0gPQgpUf85+bv9P+63sL62Nb+8ef4ycbw+PJkunkeePP81HXwgGv0jhzc5/3o9efX7N5Fr19Uj/WQy562zPr2trL94KDzoJrzoJv80Gjyl5H94qgyh9v7xzihsSp+wYV1sE5ZtXBmmvUynoWKrvzKDGT6AAAAE3RSTlMAW+TTeBLcHLMt1WsKzfUznkBIxSDAuAAAAUZJREFUKJFtktligkAMRUFZxKVuDMOAggpu1apVu+/t//9TkxBU1PsySQ4hlyGadpTd0fWOrV2R3eqyWhe80j1RpYCc7pmcI2tyaZimQw6bOTMplU9hpKIofJSUmgwtTCYq9EFhqKIJ5lbGdGIRAGhUQLNX6wRLOA2Y8vdpuvfVOJtaOjhdhL56yYrjU8cGFsRSLc4/x+DPfxBiSZN6LMlXUYXzVghBT8/7pPkdxFX28yzEO8HYI8U9dlQudMZx3AeInWWe+SrExxrhCLTre3E+M3P7FXznLn887z53a2PwGbjBLLvUP2jcYUC/FYdOA9d1g22SbN1fbizT9bUxXA+QguB4G2GlfbIFqw1i0GCzKmzDDQ1LZgPQLKHk5rAJpmSj0ykH0jxArW4V79yqF1bMkEckjYvFrTWIy0btApFsx7m68Ff1D4OdMHbngtKsAAAAAElFTkSuQmCC" alt="Google Logo">
+                Sign in with Google
+            </button>
+
+            <p class="note">By signing in, you agree to our Terms and Privacy Policy.</p>
+        </div>
+    </div>
+
+    <style>
+        /* Google Font */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(to right, #1E3C72, #2A5298);
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .login-box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .login-box h2 {
+            color: #1E3C72;
+            margin-bottom: 10px;
+        }
+
+        .login-box p {
+            font-size: 14px;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #1E3C72;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #163A65;
+        }
+
+        #googleSignInBtn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 2px solid #4285F4;
+            color: #4285F4;
+            font-weight: bold;
+        }
+
+        #googleSignInBtn img {
+            width: 20px;
+            margin-right: 10px;
+        }
+
+        #googleSignInBtn:hover {
+            background: #4285F4;
+            color: white;
+        }
+
+        .note {
+            font-size: 12px;
+            color: #777;
+            margin-top: 10px;
+        }
+
+    </style>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBS7KDJKfRTLzGYEY8FYdNhBP4uYPkiUZ4",
+        authDomain: "opportune-d6c62.firebaseapp.com",
+        projectId: "opportune-d6c62",
+        storageBucket: "opportune-d6c62.appspot.com",
+        messagingSenderId: "167593750884",
+        appId: "1:167593750884:web:9506f13217fa26712d4a71",
+        measurementId: "G-86BNWLK5N2"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+   
+    function googleSignIn() {
+    signInWithPopup(auth, provider)
+        .then((result) => {
+            console.log("User signed in successfully:", result.user);
+
+            // Save user details in localStorage
+            localStorage.setItem("userPhoto", result.user.photoURL);
+            localStorage.setItem("userName", result.user.displayName);
+            localStorage.setItem("userEmail", result.user.email);
+
+            // Send session data to backend
+            return fetch('/set-session', { 
+                method: 'POST', 
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    uid: result.user.uid, 
+                    name: result.user.displayName, 
+                    email: result.user.email, 
+                    photo: result.user.photoURL 
+                })
+            });
+        })
+        .then(response => response.text())
+        .then(data => {
+            console.log("Session Data:", data);
+            window.location.href = "/home";  // Redirect to home page
+        })
+        .catch((error) => {
+            console.error("Error in Google Sign-In:", error);
+            alert("Login Failed! ❌ " + error.message);
+        });
+}
+
+    document.getElementById("googleSignInBtn").addEventListener("click", googleSignIn);
+</script>
+
+
+</body>

@@ -1,0 +1,33 @@
+<% layout("/layouts/boilerplate") %>
+<body>
+    <h3> All Upcoming Webinars</h3>
+   <!-- <form method="get" action="/listings/new">
+        <button> Create new Listings</button>
+    </form> -->
+    <!--<div class="card" style="width: 18rem;"></div>
+<img src="..." class="card-img-top" alt="listing_image">
+<div class="card-body">
+<p class="card-text">Some quick example text to build on the card title and make up
+</div>
+</div>-->
+<div class="row row-cols-lg-3 row-cols-md-3 row-cols-sm-1 ">
+<% for (let webinar of webinars){ %>
+
+  <div class="card col" style="width: 20rem;">
+  <img src="<%= webinar.imageLink %>" class="card-img-top" alt="listing_image" height="180rem">
+   <div class="class-img-overlay"></div>
+    <div class="card-body">
+      <b><p class="card-text"><%= webinar.title %></p><br/></b>
+      <%= webinar.info %><br/>
+      <%= webinar.location %><br/>
+      <%= webinar.date%><br/>
+      <a href="<%= webinar.registrationLink %>">  <button> Register </button></a>
+      
+
+     
+
+    </div>
+  </div>
+  <%} %>
+  </div>
+  </body>
