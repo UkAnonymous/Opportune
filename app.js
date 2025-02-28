@@ -48,7 +48,7 @@ const storage = multer.diskStorage({
 });
 
 
-app.get('/', (req, res) => res.redirect("/home"));
+app.get('/', (req, res) => res.render("/home"));
 
 const upload = multer({ storage });
 
